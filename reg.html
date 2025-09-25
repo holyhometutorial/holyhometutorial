@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Holy Home Tutorial Registration</title>
+<style>
+body{font-family:Arial;background:#f3f6fb;margin:0;}
+header{background:#0f4c81;color:#fff;padding:18px;text-align:center;}
+.container{max-width:650px;margin:30px auto;background:#fff;padding:24px;border-radius:12px;box-shadow:0 6px 16px rgba(0,0,0,0.1);}
+label{display:block;margin-top:12px;font-weight:600;}
+input,select,textarea{width:100%;padding:10px;margin-top:4px;border:1px solid #ccc;border-radius:8px;}
+button{margin-top:16px;padding:12px;background:#0f4c81;color:white;border:none;border-radius:8px;cursor:pointer;}
+</style>
+</head>
+<body>
+<header><h1>HOLY HOME TUTORIAL</h1></header>
+<div class="container">
+<h2>Student Registration</h2>
+<form id="regForm">
+  <label>Full Name*</label><input id="fname" required>
+  <label>Date of Birth*</label><input id="dob" type="date" required>
+  <label>Gender*</label>
+    <select id="gender" required>
+      <option value="">Select</option><option>Male</option><option>Female</option><option>Other</option>
+    </select>
+  <label>Class Applying*</label>
+    <select id="class" required>
+      <option value="">Select class</option><option>1</option><option>2</option><option>3</option>
+      <option>4</option><option>5</option><option>6</option><option>7</option>
+      <option>8</option><option>9</option><option>10</option>
+    </select>
+  <label>Guardian Name*</label><input id="guardian" required>
+  <label>Phone*</label><input id="phone" required>
+  <label>Email</label><input id="email" type="email">
+  <label>Address*</label><textarea id="address" required></textarea>
+  <button type="submit">Register</button>
+</form>
+</div>
+
+<script>
+document.getElementById('regForm').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const data = {
+    fname: fname.value.trim(),
+    dob: dob.value,
+    gender: gender.value,
+    class: document.getElementById('class').value,
+    guardian: guardian.value.trim(),
+    phone: phone.value.trim(),
+    email: email.value.trim(),
+    address: address.value.trim()
+  };
+  try{
+    const r = await fetch('/api/register',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(data)
+    });
+    const j = await r.json();
+    if(r.ok) { alert('Registration successful! ID: '+j.id); regForm.reset(); }
+    else    { alert('Error: '+j.error); }
+  }catch(err){ alert('Network error'); console.error(err); }
+});
+</script>
+</body>
+</html>
